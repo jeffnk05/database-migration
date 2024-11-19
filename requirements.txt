@@ -1,0 +1,14 @@
+certifi==2024.8.30
+charset-normalizer==3.4.0
+idna==3.10
+importlib_metadata==8.5.0
+packaging==24.1
+psycopg2==2.9.10
+PyJWT==2.9.0
+python-arango==8.1.2
+requests==2.32.3
+requests-toolbelt==1.0.0
+setuptools==75.3.0
+urllib3==2.2.3
+wcwidth==0.2.13
+zipp==3.20.2
