@@ -137,6 +137,7 @@ def most_watched_movies():
     for doc in cursor:
         print(doc)
 
+# 4 h
 def most_watched_movies_per_category():
     query = """
         FOR c IN category
@@ -164,7 +165,7 @@ def most_watched_movies_per_category():
     for doc in cursor:
         print(doc)
     
-
+# 4 i
 def get_customer_view():
     query = """
     FOR cust IN customer
@@ -219,7 +220,7 @@ print("Die 10 meistgesehenen Filme unter Angabe des Titels, absteigendsortiert")
 most_watched_movies()
 
 print("")
-print("Die Vor- und Nachnamen sowie die Niederlassung der 10 Kunden, die das meiste Geld ausgegeben haben")
+print("Die 3 meistgesehenen Filmkategorien")
 most_watched_movies_per_category()
 
 print("")

@@ -23,6 +23,7 @@ def delete_film_and_rentals():
                             REMOVE p IN payment
         """
     print("Lösche payments für alle rentals von Filmen unter 60 Minuten")
+    print(f"Befehl: {delete_payments_query}")
     db.aql.execute(delete_payments_query)
     print("Payments gelöscht.")
 
@@ -37,6 +38,7 @@ def delete_film_and_rentals():
                         REMOVE r IN rental
         """
     print("Lösche rentals für Filme unter 60 Minuten")
+    print(f"Befehl: {delete_rentals_query}")
     db.aql.execute(delete_rentals_query)
     print("Rentals gelöscht.")
 
@@ -49,6 +51,7 @@ def delete_film_and_rentals():
                     REMOVE i IN inventory
         """
     print("Lösche inventory-Einträge für Filme unter 60 Minuten")
+    print(f"Befehl: {delete_inventory_query}")
     db.aql.execute(delete_inventory_query)
     print("Inventory-Einträge gelöscht.")
 
@@ -68,7 +71,9 @@ def delete_film_and_rentals():
                     REMOVE fa IN film_actor
         """
     print("Lösche film_category- und film_actor-Einträge für Filme unter 60 Minuten")
+    print(f"Befehl: {del_film_cat_query}")
     db.aql.execute(del_film_cat_query)
+    print(f"Befehl: {del_film_act_query}")
     db.aql.execute(del_film_act_query)
     print("film_category und film_actor Einträge gelöscht.")
 
@@ -79,7 +84,9 @@ def delete_film_and_rentals():
                 REMOVE f IN film
         """
     print("Lösche alle Filme unter 60 Minuten")
+    print(f"Befehl: {del_film_query}")
     db.aql.execute(del_film_query)
     print("Filme gelöscht.")
 
+print("Alle Filme, die weniger als 60 Minuten Spielzeit haben und alle damit zusammenhängenden Verleihungen")
 delete_film_and_rentals()

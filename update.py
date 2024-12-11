@@ -13,6 +13,7 @@ def generate_password():
     password = ''.join(secrets.choice(alphabet) for i in range(20))  # for a 20-character password
     return password
 
+# 5 a 
 def update_staff_password():
     staff = db.collection('staff')
 
@@ -20,7 +21,11 @@ def update_staff_password():
 
     for document in cursor:
         print(f'User: {document['username']}, old password: {document['password']}')
+
+        # replace password in staff document 
         document['password'] = generate_password()
+
+        # commit change
         staff.update(document)
         print(f'User: {document['username']}, new password: {document['password']}')   
 
@@ -48,14 +53,19 @@ def create_new_address():
 def add_store_and_move_inventory():
     address_id = create_new_address
 
+    # create new store document
     new_store = {
         "_key": "3",
         "address": str(address_id),
         "manager_staff_id": "1"
         }
     db.collection("store").insert(new_store)
+    print('Methode zum Erstellen eines neuen Standorts: db.collection("store").insert(new_store)')
+
+    # get store id
     new_store_id = db.collection("store").get('3')['_id']
 
+    # Inventar zum neuen Standort verlegen
     update_inventory_store_key(new_store_id)
 
     # update store ids of staff (Nebenbedingung)
@@ -68,6 +78,7 @@ def update_inventory_store_key(new_store_id):
     FOR inv IN inventory
         UPDATE inv WITH { store: @new_store_id } IN inventory
     '''
+    print(f'Befehl zum Inventar verlegen: {query}')
     db.aql.execute(query, bind_vars={"new_store_id": new_store_id})
     print(f"Alle Inventory-Dokumente wurden aktualisiert und die Store-Id wurde auf '{new_store_id}' gesetzt.")
 
@@ -76,8 +87,12 @@ def update_staff_store(store_id):
     FOR s IN staff
         UPDATE s WITH { store: @new_store_id } IN staff
     '''
+    print(f'Befehl zum verlegen der Mitarbeter: {query}')
     db.aql.execute(query, bind_vars={"new_store_id": store_id})
     print(f"Alle Staff-Dokumente wurden aktualisiert und die Store-Id wurde auf '{store_id}' gesetzt.")
 
+print("Vergebt allen Mitarbeitern ein neues, sicheres Passwort")
 update_staff_password()
+
+print(" Erzeugt einen neuen Standort (mit einer fiktiven Adresse) und verlegt das Inventar der beiden bisherigen Standorte dorthin")
 add_store_and_move_inventory()
