@@ -91,8 +91,10 @@ def update_staff_store(store_id):
     db.aql.execute(query, bind_vars={"new_store_id": store_id})
     print(f"Alle Staff-Dokumente wurden aktualisiert und die Store-Id wurde auf '{store_id}' gesetzt.")
 
+print("")
 print("Vergebt allen Mitarbeitern ein neues, sicheres Passwort")
 update_staff_password()
 
+print("")
 print(" Erzeugt einen neuen Standort (mit einer fiktiven Adresse) und verlegt das Inventar der beiden bisherigen Standorte dorthin")
 add_store_and_move_inventory()
