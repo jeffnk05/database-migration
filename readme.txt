@@ -13,6 +13,6 @@ Aufgabenaufteilung:
 Aufgabe 1: Endrit & Jeff 
 Aufgabe 2: Jeff
 Aufgbae 3: Endrit: Aufbau der Datenbankverbindungen, Jeff: Umsetzung der Migrationslogik 
-Aufgabe 4: Jeff & Endrit (Pair Porgramming)
+Aufgabe 4: Jeff & Endrit (Pair Programming)
 Aufgabe 5: Jeff
 Aufgabe 6: Endrit
