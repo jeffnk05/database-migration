@@ -11,7 +11,7 @@ WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Kopiere Python-Dateien und das wait-for-it Skript
+# Kopiere Python-Dateien
 COPY *.py /app/
 
 CMD ["sh", "-c", "python -u migrate.py && python -u read.py && python -u update.py && python -u delete.py"]
