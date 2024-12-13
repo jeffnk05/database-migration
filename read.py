@@ -172,6 +172,7 @@ def get_customer_view():
         LET addr = DOCUMENT(cust.address)
         LET city = DOCUMENT(addr.city)
         LET country = DOCUMENT(city.country)
+        LIMIT 10
         RETURN {
             customer_id: cust._key,
             name: CONCAT(cust.first_name, " ", cust.last_name),
@@ -224,5 +225,5 @@ print("Die 3 meistgesehenen Filmkategorien")
 most_watched_movies_per_category()
 
 print("")
-print("Customer list")
+print('Eine Sicht auf die Kunden mit allen relevanten Informationen wie im View „customer_list“ der vorhandenen Postgres-Datenbank')
 get_customer_view()
