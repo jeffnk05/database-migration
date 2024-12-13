@@ -7,7 +7,7 @@ db = client.db('dvdrental', username='root', password='rootpassword')
 # 4 a
 def count_movies():
     # Execute the query
-    query = 'RETURN LENGTH(film)'
+    query = 'RETURN LENGTH(inventory)'
     cursor = db.aql.execute(query)
     # Iterate through the result cursor
     print(f"Befehl: {query}")
@@ -17,14 +17,20 @@ def count_movies():
 # 4 b
 def get_unique_movies_per_store():
     query = """
-            FOR i IN inventory
-                COLLECT store_id = i.store
-                AGGREGATE movie_count = COUNT(UNIQUE(i.film_id))
+        FOR store IN (
+            FOR inventory IN inventory
+                COLLECT store_id = inventory.store INTO groupedFilms = inventory.film
                 RETURN {
-                    store_id: store_id,
-                    movie_count_per_store: movie_count
+                    store_id,
+                    film_ids: UNIQUE(groupedFilms[*])
                 }
-        """
+        )
+        RETURN {
+            store_id: store._id,
+            movie_count_per_store: LENGTH(store.film_ids)
+        }
+
+    """
     cursor = db.aql.execute(query)
 
     print(f"Befehl: {query}")
@@ -72,8 +78,11 @@ def get_rentals_per_customer():
                 COLLECT customer_id = r.customer WITH COUNT INTO rental_count
                 SORT rental_count DESC
                 LIMIT 10
+                LET customer = DOCUMENT(customer_id)
                 RETURN {
                     customer_id: customer_id,
+                    first_name: customer.first_name,
+                    last_name: customer.last_name,
                     rental_count: rental_count
                 }
         """
@@ -210,7 +219,7 @@ earnings_per_employee()
 
 print("")
 print("Die IDs der 10 Kunden mit den meisten Entleihungen")
-get_rentals_per_customer
+get_rentals_per_customer()
 
 print("")
 print("Die Vor- und Nachnamen sowie die Niederlassung der 10 Kunden, die das meiste Geld ausgegeben haben")
