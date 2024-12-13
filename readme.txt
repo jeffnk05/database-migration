@@ -14,9 +14,9 @@ Teilweise wurden für Befehle die Methoden der pyArango Bibliothek ausgeführt, 
 
 Aufgabenaufteilung:
 
-Aufgabe 1: Endrit & Jeff 
-Aufgabe 2: Jeff
-Aufgbae 3: Endrit: Aufbau der Datenbankverbindungen, Jeff: Umsetzung der Migrationslogik 
+Aufgabe 1: Endrit Kameraj & Jeff Edjekoomhene
+Aufgabe 2: Jeff Edjekoomhene
+Aufgbae 3: Endrit Kameraj: Aufbau der Datenbankverbindungen, Jeff Edjekoomhene: Umsetzung der Migrationslogik 
 Aufgabe 4: Jeff & Endrit (Pair Programming)
-Aufgabe 5: Jeff
-Aufgabe 6: Endrit
+Aufgabe 5: Jeff Edjekoomhene
+Aufgabe 6: Endrit Kameraj

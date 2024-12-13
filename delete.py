@@ -10,6 +10,32 @@ db = client.db('dvdrental', username='root', password='rootpassword')
     b. Alle damit zusammenhängenden Entleihungen
 """
 def delete_film_and_rentals():
+    # Zähle Filme unter 60 Minuten vor dem Löschen
+    count_films_query = """
+    RETURN LENGTH(
+        FOR f IN film
+        FILTER f.length < 60
+        RETURN f
+    )
+    """
+    films_count_before = db.aql.execute(count_films_query).next()
+    print(f"Anzahl Filme unter 60 Minuten vor dem Löschen: {films_count_before}")
+
+    # Zähle betroffene rentals vor dem Löschen
+    count_rentals_query = """
+    RETURN LENGTH(
+        FOR f IN film
+        FILTER f.length < 60
+        FOR i IN inventory
+        FILTER i.film == f._id
+        FOR r IN rental
+        FILTER r.inventory == i._id
+        RETURN r
+    )
+    """
+    rentals_count_before = db.aql.execute(count_rentals_query).next()
+    print(f"Anzahl betroffener Verleihungen vor dem Löschen: {rentals_count_before}")
+
     # Delete payments associated with the rentals
     delete_payments_query = """
             FOR f IN film
@@ -87,6 +113,19 @@ def delete_film_and_rentals():
     print(f"Befehl: {del_film_query}")
     db.aql.execute(del_film_query)
     print("Filme gelöscht.")
+
+    # Überprüfe nach dem Löschen
+    films_count_after = db.aql.execute(count_films_query).next()
+    rentals_count_after = db.aql.execute(count_rentals_query).next()
+
+    print("\nErgebnis der Löschoperation:")
+    print(f"Gelöschte Filme: {films_count_before - films_count_after}")
+    print(f"Gelöschte Verleihungen: {rentals_count_before - rentals_count_after}")
+    
+    if films_count_after == 0 and rentals_count_after == 0:
+        print("Löschung erfolgreich: Alle betroffenen Filme und Verleihungen wurden entfernt.")
+    else:
+        print("Warnung: Möglicherweise wurden nicht alle Datensätze gelöscht!")
 
 print("Alle Filme, die weniger als 60 Minuten Spielzeit haben und alle damit zusammenhängenden Verleihungen")
 delete_film_and_rentals()

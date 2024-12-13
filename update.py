@@ -62,6 +62,9 @@ def add_store_and_move_inventory():
     db.collection("store").insert(new_store)
     print('Methode zum Erstellen eines neuen Standorts: db.collection("store").insert(new_store)')
 
+    # get newly created store
+    print(f'Neuer Store aus der Datenbank: {db.collection("store").get("3")}') 
+
     # get store id
     new_store_id = db.collection("store").get('3')['_id']
 
