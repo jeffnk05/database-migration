@@ -1,0 +1,308 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2821
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww27700\viewh15700\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 script        | All actor records successfully inserted into actor\
+script        | All country records successfully inserted into country\
+script        | All category records successfully inserted into category\
+script        | All language records successfully inserted into language\
+script        | All city records successfully inserted into city\
+script        | All film records successfully inserted into film\
+script        | All address records successfully inserted into address\
+script        | All store records successfully inserted into store\
+script        | All staff records successfully inserted into staff\
+script        | All inventory records successfully inserted into inventory\
+script        | All customer records successfully inserted into customer\
+script        | All rental records successfully inserted into rental\
+script        | All payment records successfully inserted into payment\
+script        | All film_category records successfully transferred to film_category\
+script        | All film_actor records successfully transferred to film_actor\
+script        | Store-Dokument 1 erfolgreich aktualisiert.\
+script        | Store-Dokument 2 erfolgreich aktualisiert.\
+script        | Verbindung zu PostgreSQL geschlossen.\
+script        | Gesamtanzahl der verf\'fcgbaren Filme\
+script        | Befehl: RETURN LENGTH(inventory)\
+script        | 4581\
+script        | \
+script        | Anzahl der unterschiedlichen Filme je Standort\
+script        | Befehl: \
+script        |         FOR store IN (\
+script        |             FOR inventory IN inventory\
+script        |                 COLLECT store_id = inventory.store INTO groupedFilms = inventory.film\
+script        |                 RETURN \{\
+script        |                     store_id,\
+script        |                     film_ids: UNIQUE(groupedFilms[*])\
+script        |                 \}\
+script        |         )\
+script        |         RETURN \{\
+script        |             store_id: store._id,\
+script        |             movie_count_per_store: LENGTH(store.film_ids)\
+script        |         \}\
+script        | \
+script        |     \
+script        | Ergebnis\
+script        | \{'store_id': None, 'movie_count_per_store': 759\}\
+script        | \{'store_id': None, 'movie_count_per_store': 762\}\
+script        | \
+script        | Die Vor- und Nachnamen der 10 Schauspieler mit den meisten Filmen, absteigend sortiert.\
+script        | Befehl: \
+script        |             FOR a IN actor\
+script        |             LET film_count = LENGTH(\
+script        |                 FOR fa IN film_actor\
+script        |                     FILTER fa._from == a._id\
+script        |                     RETURN fa\
+script        |             )\
+script        |             SORT film_count DESC\
+script        |             LIMIT 10\
+script        |             RETURN \{ first_name: a.first_name, last_name: a.last_name, film_count \}\
+script        |         \
+script        | \{'first_name': 'Gina', 'last_name': 'Degeneres', 'film_count': 42\}\
+script        | \{'first_name': 'Walter', 'last_name': 'Torn', 'film_count': 41\}\
+script        | \{'first_name': 'Mary', 'last_name': 'Keitel', 'film_count': 40\}\
+script        | \{'first_name': 'Matthew', 'last_name': 'Carrey', 'film_count': 39\}\
+script        | \{'first_name': 'Sandra', 'last_name': 'Kilmer', 'film_count': 37\}\
+script        | \{'first_name': 'Scarlett', 'last_name': 'Damon', 'film_count': 36\}\
+script        | \{'first_name': 'Angela', 'last_name': 'Witherspoon', 'film_count': 35\}\
+script        | \{'first_name': 'Vivien', 'last_name': 'Basinger', 'film_count': 35\}\
+script        | \{'first_name': 'Uma', 'last_name': 'Wood', 'film_count': 35\}\
+script        | \{'first_name': 'Henry', 'last_name': 'Berry', 'film_count': 35\}\
+script        | \
+script        | Die Erl\'f6se je Mitarbeiter\
+script        | Befehl: \
+script        |     FOR s IN staff\
+script        |         FOR p IN payment\
+script        |             FILTER p.staff == s._id\
+script        |             COLLECT staff_id = s._id, staff_name = s.name AGGREGATE earnings = SUM(p.amount)\
+script        |         RETURN \{ staff_id, staff_name, earnings \}\
+script        |     \
+script        | \{'staff_id': 'staff/1', 'staff_name': None, 'earnings': 30252.12000000458\}\
+script        | \{'staff_id': 'staff/2', 'staff_name': None, 'earnings': 31059.920000004768\}\
+script        | \
+script        | Die IDs der 10 Kunden mit den meisten Entleihungen\
+script        | Befehl: \
+script        |             FOR r IN rental\
+script        |                 COLLECT customer_id = r.customer WITH COUNT INTO rental_count\
+script        |                 SORT rental_count DESC\
+script        |                 LIMIT 10\
+script        |                 LET customer = DOCUMENT(customer_id)\
+script        |                 RETURN \{\
+script        |                     customer_id: customer_id,\
+script        |                     first_name: customer.first_name,\
+script        |                     last_name: customer.last_name,\
+script        |                     rental_count: rental_count\
+script        |                 \}\
+script        |         \
+script        | \{'customer_id': 'customer/148', 'first_name': 'Eleanor', 'last_name': 'Hunt', 'rental_count': 46\}\
+script        | \{'customer_id': 'customer/526', 'first_name': 'Karl', 'last_name': 'Seal', 'rental_count': 45\}\
+script        | \{'customer_id': 'customer/144', 'first_name': 'Clara', 'last_name': 'Shaw', 'rental_count': 42\}\
+script        | \{'customer_id': 'customer/236', 'first_name': 'Marcia', 'last_name': 'Dean', 'rental_count': 42\}\
+script        | \{'customer_id': 'customer/75', 'first_name': 'Tammy', 'last_name': 'Sanders', 'rental_count': 41\}\
+script        | \{'customer_id': 'customer/197', 'first_name': 'Sue', 'last_name': 'Peters', 'rental_count': 40\}\
+script        | \{'customer_id': 'customer/469', 'first_name': 'Wesley', 'last_name': 'Bull', 'rental_count': 40\}\
+script        | \{'customer_id': 'customer/137', 'first_name': 'Rhonda', 'last_name': 'Kennedy', 'rental_count': 39\}\
+script        | \{'customer_id': 'customer/178', 'first_name': 'Marion', 'last_name': 'Snyder', 'rental_count': 39\}\
+script        | \{'customer_id': 'customer/468', 'first_name': 'Tim', 'last_name': 'Cary', 'rental_count': 39\}\
+script        | \
+script        | Die Vor- und Nachnamen sowie die Niederlassung der 10 Kunden, die das meiste Geld ausgegeben haben\
+script        | Befehl: \
+script        |             FOR c IN customer\
+script        |                 LET payments = (\
+script        |                     FOR p IN payment\
+script        |                     FILTER p.customer == c._id\
+script        |                     COLLECT AGGREGATE total = SUM(p.amount)\
+script        |                     RETURN total\
+script        |                 )[0]\
+script        |                 LET store = FIRST(\
+script        |                     FOR s IN store\
+script        |                     FILTER c.store == s._id\
+script        |                     RETURN s\
+script        |                 )\
+script        |                 SORT payments DESC\
+script        |                 LIMIT 10\
+script        |                 RETURN \{ \
+script        |                     first_name: c.first_name, \
+script        |                     last_name: c.last_name, \
+script        |                     store_id: store._id, \
+script        |                     total_spent: payments \
+script        |                 \}\
+script        |         \
+script        | \{'first_name': 'Eleanor', 'last_name': 'Hunt', 'store_id': 'store/1', 'total_spent': 211.5500000000001\}\
+script        | \{'first_name': 'Karl', 'last_name': 'Seal', 'store_id': 'store/2', 'total_spent': 208.58000000000013\}\
+script        | \{'first_name': 'Marion', 'last_name': 'Snyder', 'store_id': 'store/2', 'total_spent': 194.61000000000007\}\
+script        | \{'first_name': 'Rhonda', 'last_name': 'Kennedy', 'store_id': 'store/2', 'total_spent': 191.62000000000006\}\
+script        | \{'first_name': 'Clara', 'last_name': 'Shaw', 'store_id': 'store/1', 'total_spent': 189.60000000000005\}\
+script        | \{'first_name': 'Tommy', 'last_name': 'Collazo', 'store_id': 'store/1', 'total_spent': 183.63000000000002\}\
+script        | \{'first_name': 'Ana', 'last_name': 'Bradley', 'store_id': 'store/2', 'total_spent': 167.67000000000002\}\
+script        | \{'first_name': 'Curtis', 'last_name': 'Irby', 'store_id': 'store/2', 'total_spent': 167.62\}\
+script        | \{'first_name': 'Marcia', 'last_name': 'Dean', 'store_id': 'store/1', 'total_spent': 166.61000000000004\}\
+script        | \{'first_name': 'Mike', 'last_name': 'Way', 'store_id': 'store/1', 'total_spent': 162.67\}\
+script        | \
+script        | Die 10 meistgesehenen Filme unter Angabe des Titels, absteigendsortiert\
+script        | Befehl: \
+script        |             FOR f IN film\
+script        |                 LET rental_count = LENGTH(\
+script        |                     FOR i IN inventory\
+script        |                         FILTER i.film == f._id\
+script        |                         FOR r IN rental\
+script        |                         FILTER r.inventory == i._id\
+script        |                         RETURN 1\
+script        |                 )\
+script        |                 SORT rental_count DESC\
+script        |                 LIMIT 10\
+script        |                 RETURN \{\
+script        |                     title: f.title,\
+script        |                     total_rentals: rental_count\
+script        |             \}\
+script        |         \
+script        | \{'title': 'Bucket Brotherhood', 'total_rentals': 34\}\
+script        | \{'title': 'Rocketeer Mother', 'total_rentals': 33\}\
+script        | \{'title': 'Grit Clockwork', 'total_rentals': 32\}\
+script        | \{'title': 'Forward Temple', 'total_rentals': 32\}\
+script        | \{'title': 'Ridgemont Submarine', 'total_rentals': 32\}\
+script        | \{'title': 'Juggler Hardly', 'total_rentals': 32\}\
+script        | \{'title': 'Scalawag Duck', 'total_rentals': 32\}\
+script        | \{'title': 'Timberland Sky', 'total_rentals': 31\}\
+script        | \{'title': 'Wife Turn', 'total_rentals': 31\}\
+script        | \{'title': 'Zorro Ark', 'total_rentals': 31\}\
+script        | \
+script        | Die 3 meistgesehenen Filmkategorien\
+script        | Befehl: \
+script        |         FOR c IN category\
+script        |             LET watch_count = LENGTH(\
+script        |                 FOR fc IN film_category\
+script        |                 FILTER c._id == fc._to\
+script        |                 FOR f IN film\
+script        |                     FILTER f._id == fc._from\
+script        |                     FOR i IN inventory\
+script        |                     FILTER i.film == f._id\
+script        |                     FOR r IN rental\
+script        |                         FILTER r.inventory == i._id\
+script        |                         RETURN r\
+script        |             )\
+script        |             SORT watch_count DESC\
+script        |             LIMIT 3\
+script        |             RETURN \{ \
+script        |                 watch_count: watch_count,\
+script        |                 category: c.name\
+script        |             \}\
+script        |     \
+script        | \{'watch_count': 1179, 'category': 'Sports'\}\
+script        | \{'watch_count': 1166, 'category': 'Animation'\}\
+script        | \{'watch_count': 1112, 'category': 'Action'\}\
+script        | \
+script        | Eine Sicht auf die Kunden mit allen relevanten Informationen wie im View \'84customer_list\'93 der vorhandenen Postgres-Datenbank\
+script        | Befehl: \
+script        |     FOR cust IN customer\
+script        |         LET addr = DOCUMENT(cust.address)\
+script        |         LET city = DOCUMENT(addr.city)\
+script        |         LET country = DOCUMENT(city.country)\
+script        |         LIMIT 10\
+script        |         RETURN \{\
+script        |             customer_id: cust._key,\
+script        |             name: CONCAT(cust.first_name, " ", cust.last_name),\
+script        |             address: addr.address,\
+script        |             "zip code": addr.postal_code,\
+script        |             phone: addr.phone,\
+script        |             city: city.city,\
+script        |             country: country.country,\
+script        |             notes: cust.activebool == true ? "active" : "",\
+script        |             store_id: cust.store\
+script        |         \}\
+script        |     \
+script        | \{'customer_id': '524', 'name': 'Jared Ely', 'address': '1003 Qinhuangdao Street', 'zip code': '25972', 'phone': '35533115997', 'city': 'Purwakarta', 'country': 'Indonesia', 'notes': 'active', 'store_id': 'store/1'\}\
+script        | \{'customer_id': '1', 'name': 'Mary Smith', 'address': '1913 Hanoi Way', 'zip code': '35200', 'phone': '28303384290', 'city': 'Sasebo', 'country': 'Japan', 'notes': 'active', 'store_id': 'store/1'\}\
+script        | \{'customer_id': '2', 'name': 'Patricia Johnson', 'address': '1121 Loja Avenue', 'zip code': '17886', 'phone': '838635286649', 'city': 'San Bernardino', 'country': 'United States', 'notes': 'active', 'store_id': 'store/1'\}\
+script        | \{'customer_id': '3', 'name': 'Linda Williams', 'address': '692 Joliet Street', 'zip code': '83579', 'phone': '448477190408', 'city': 'Athenai', 'country': 'Greece', 'notes': 'active', 'store_id': 'store/1'\}\
+script        | \{'customer_id': '4', 'name': 'Barbara Jones', 'address': '1566 Inegl Manor', 'zip code': '53561', 'phone': '705814003527', 'city': 'Myingyan', 'country': 'Myanmar', 'notes': 'active', 'store_id': 'store/2'\}\
+script        | \{'customer_id': '5', 'name': 'Elizabeth Brown', 'address': '53 Idfu Parkway', 'zip code': '42399', 'phone': '10655648674', 'city': 'Nantou', 'country': 'Taiwan', 'notes': 'active', 'store_id': 'store/1'\}\
+script        | \{'customer_id': '6', 'name': 'Jennifer Davis', 'address': '1795 Santiago de Compostela Way', 'zip code': '18743', 'phone': '860452626434', 'city': 'Laredo', 'country': 'United States', 'notes': 'active', 'store_id': 'store/2'\}\
+script        | \{'customer_id': '7', 'name': 'Maria Miller', 'address': '900 Santiago de Compostela Parkway', 'zip code': '93896', 'phone': '716571220373', 'city': 'Kragujevac', 'country': 'Yugoslavia', 'notes': 'active', 'store_id': 'store/1'\}\
+script        | \{'customer_id': '8', 'name': 'Susan Wilson', 'address': '478 Joliet Way', 'zip code': '77948', 'phone': '657282285970', 'city': 'Hamilton', 'country': 'New Zealand', 'notes': 'active', 'store_id': 'store/2'\}\
+script        | \{'customer_id': '9', 'name': 'Margaret Moore', 'address': '613 Korolev Drive', 'zip code': '45844', 'phone': '380657522649', 'city': 'Masqat', 'country': 'Oman', 'notes': 'active', 'store_id': 'store/2'\}\
+script        | \
+script        | Vergebt allen Mitarbeitern ein neues, sicheres Passwort\
+script        | User: Mike, old password: 8cb2237d0679ca88db6464eac60da96345513964\
+script        | User: Mike, new password: Lw4o74SmYXFvtcVnEtYt\
+script        | User: Jon, old password: 8cb2237d0679ca88db6464eac60da96345513964\
+script        | User: Jon, new password: ITDr83Pq1EuP1vPbjdYQ\
+script        | \
+script        |  Erzeugt einen neuen Standort (mit einer fiktiven Adresse) und verlegt das Inventar der beiden bisherigen Standorte dorthin\
+script        | Methode zum Erstellen eines neuen Standorts: db.collection("store").insert(new_store)\
+script        | Neuer Store aus der Datenbank: \{'_key': '3', '_id': 'store/3', '_rev': '_i7RW0C2---', 'address': '<function create_new_address at 0xffff98343600>', 'manager_staff_id': '1'\}\
+script        | Befehl zum Inventar verlegen: \
+script        |     FOR inv IN inventory\
+script        |         UPDATE inv WITH \{ store: @new_store_id \} IN inventory\
+script        |     \
+script        | Alle Inventory-Dokumente wurden aktualisiert und die Store-Id wurde auf 'store/3' gesetzt.\
+script        | Befehl zum verlegen der Mitarbeter: \
+script        |     FOR s IN staff\
+script        |         UPDATE s WITH \{ store: @new_store_id \} IN staff\
+script        |     \
+script        | Alle Staff-Dokumente wurden aktualisiert und die Store-Id wurde auf 'store/3' gesetzt.\
+script        | Alle Filme, die weniger als 60 Minuten Spielzeit haben und alle damit zusammenh\'e4ngenden Verleihungen\
+script        | Anzahl Filme unter 60 Minuten vor dem L\'f6schen: 96\
+script        | Anzahl betroffener Verleihungen vor dem L\'f6schen: 1531\
+script        | L\'f6sche payments f\'fcr alle rentals von Filmen unter 60 Minuten\
+script        | Befehl: \
+script        |             FOR f IN film\
+script        |                 FILTER f.length < 60\
+script        |                 FOR i IN inventory\
+script        |                     FILTER i.film == f._id\
+script        |                     FOR r IN rental\
+script        |                         FILTER r.inventory == i._id\
+script        |                         FOR p IN payment\
+script        |                             FILTER p.rental == r._id\
+script        |                             REMOVE p IN payment\
+script        |         \
+script        | Payments gel\'f6scht.\
+script        | L\'f6sche rentals f\'fcr Filme unter 60 Minuten\
+script        | Befehl: \
+script        |             FOR f IN film\
+script        |                 FILTER f.length < 60\
+script        |                 FOR i IN inventory\
+script        |                     FILTER i.film == f._id\
+script        |                     FOR r IN rental\
+script        |                         FILTER r.inventory == i._id\
+script        |                         REMOVE r IN rental\
+script        |         \
+script        | Rentals gel\'f6scht.\
+script        | L\'f6sche inventory-Eintr\'e4ge f\'fcr Filme unter 60 Minuten\
+script        | Befehl: \
+script        |             FOR f IN film\
+script        |                 FILTER f.length < 60\
+script        |                 FOR i IN inventory\
+script        |                     FILTER i.film == f._id\
+script        |                     REMOVE i IN inventory\
+script        |         \
+script        | Inventory-Eintr\'e4ge gel\'f6scht.\
+script        | L\'f6sche film_category- und film_actor-Eintr\'e4ge f\'fcr Filme unter 60 Minuten\
+script        | Befehl: \
+script        |             FOR f IN film\
+script        |                 FILTER f.length < 60\
+script        |                 FOR fc IN film_category\
+script        |                     FILTER fc.film == f._id\
+script        |                     REMOVE fc IN film_category\
+script        |         \
+script        | Befehl: \
+script        |             FOR f IN film\
+script        |                 FILTER f.length < 60\
+script        |                 FOR fa IN film_actor\
+script        |                     FILTER fa.film == f._id\
+script        |                     REMOVE fa IN film_actor\
+script        |         \
+script        | film_category und film_actor Eintr\'e4ge gel\'f6scht.\
+script        | L\'f6sche alle Filme unter 60 Minuten\
+script        | Befehl: \
+script        |             FOR f IN film\
+script        |                 FILTER f.length < 60\
+script        |                 REMOVE f IN film\
+script        |         \
+script        | Filme gel\'f6scht.\
+script        | \
+script        | Ergebnis der L\'f6schoperation:\
+script        | Gel\'f6schte Filme: 96\
+script        | Gel\'f6schte Verleihungen: 1531\
+script        | L\'f6schung erfolgreich: Alle betroffenen Filme und Verleihungen wurden entfernt.}
