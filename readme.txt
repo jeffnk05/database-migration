@@ -7,7 +7,7 @@ Ausgabe:
 
 Befehl: docker-compose logs script
 
-Die CRUD Ergebnisse der CRUD Optionen werden sofern sie einen Output liefern im Logfile des script-Containers ausgegeben. Bis sie vollständig geladen sind, dauert es um die 3 Minuten.
+Die CRUD Ergebnisse der CRUD Optionen werden, sofern sie einen Output liefern, im Logfile des script-Containers ausgegeben. 
 
 Zusätzliche Informationen:
 CREATE: In der migrate.py wird die Migration durchgeführt.
