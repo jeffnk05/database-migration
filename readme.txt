@@ -5,9 +5,9 @@ docker-compose up --build
 
 Ausgabe:
 
-Befehl: docker-compose logs script
-
 Die CRUD Ergebnisse der CRUD Optionen werden, sofern sie einen Output liefern, im Logfile des script-Containers ausgegeben. 
+Befehl: docker-compose logs script
+Die zu erwartenende Ausgabe ist in der output.rtf-Datei zu finden.
 
 Zusätzliche Informationen:
 CREATE: In der migrate.py wird die Migration durchgeführt.
